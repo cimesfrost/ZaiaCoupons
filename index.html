@@ -100,6 +100,8 @@
             border: 1px solid rgba(225, 190, 231, 0.25); /* Matching border */
             box-shadow: 0 8px 30px rgba(0,0,0,0.1);
             transition: all 0.3s ease, transform 0.1s linear; /* Parallax transition */
+            position: relative;
+            overflow: hidden;
         }
 
         .card-info {
@@ -282,24 +284,15 @@
            0 0 2.5em 2em var(--glow-spread-color),
            inset 0 0 0.5em 0.25em var(--glow-color);
         }
-
-        /* --- Move On Button Specific Styles --- */
-        .move-on-container {
-            width: 50px; /* Made really really tiny */
-            height: 20px; /* Made really really tiny */
+        
+        /* --- Animated Border for Special Card --- */
+        .animated-border-card::before {
+            content: '';
+            position: absolute;
+            background: rgba(255, 255, 255, 0.8); /* Trail color */
+            box-shadow: 0 0 5px rgba(255, 255, 255, 0.8), 0 0 10px rgba(255, 255, 255, 0.5);
+            animation: trace-border 4s linear infinite;
         }
-        .move-on-container:hover {
-            transform: scale(1); /* Disable card hover effect for this one */
-        }
-        .move-on-btn {
-            width: 100%;
-            height: 100%;
-        }
-        .move-on-btn span {
-            font-size: 7px; /* Made really really tiny */
-            padding: 0 2px;
-        }
-
 
         /* --- Modal and Notification Styles --- */
         .modal-overlay {
@@ -322,7 +315,7 @@
         .modal-buttons button:hover { transform: scale(1.05); }
         #confirm-yes { background: #00FF7F; color: #111; }
         #confirm-no { background: #FF1493; color: #fff; }
-        #notification, #out-of-order-notification {
+        #notification {
             position: fixed; bottom: 20px; left: 50%; transform: translateX(-50%);
             background: rgba(0, 255, 127, 0.2); backdrop-filter: blur(10px);
             -webkit-backdrop-filter: blur(10px); color: #fff; padding: 15px 30px;
@@ -330,11 +323,7 @@
             font-weight: 600; z-index: 101; opacity: 0;
             transition: opacity 0.5s ease, bottom 0.5s ease; pointer-events: none;
         }
-        #out-of-order-notification {
-            background: rgba(255, 100, 100, 0.2);
-            border: 1px solid rgba(255, 100, 100, 0.3);
-        }
-        #notification.visible, #out-of-order-notification.visible {
+        #notification.visible {
             opacity: 1;
             bottom: 30px;
         }
@@ -349,6 +338,59 @@
         @keyframes blink { 0%, 100% { box-shadow: 0 0 10px 0 white; } 50% { box-shadow: 0 0 10px 2px white; } }
         @keyframes fallingStar1 { 0% { top: -10px; left: 220px; opacity: 1; } 100% { top: 200px; left: -20px; opacity: 1; } }
         @keyframes fallingStar2 { 0% { top: -10px; left: 150px; opacity: 1; } 100% { top: 200px; left: -90px; opacity: 1; } }
+        @keyframes trace-border {
+            0% {
+                top: 0;
+                left: 0;
+                width: 0;
+                height: 2px;
+            }
+            25% {
+                top: 0;
+                left: 0;
+                width: 100%;
+                height: 2px;
+            }
+            25.001% {
+                top: 0;
+                left: auto;
+                right: 0;
+                width: 2px;
+                height: 0;
+            }
+            50% {
+                top: 0;
+                right: 0;
+                width: 2px;
+                height: 100%;
+            }
+            50.001% {
+                top: auto;
+                bottom: 0;
+                right: 0;
+                width: 0;
+                height: 2px;
+            }
+            75% {
+                bottom: 0;
+                right: 0;
+                width: 100%;
+                height: 2px;
+            }
+            75.001% {
+                bottom: 0;
+                left: 0;
+                right: auto;
+                width: 2px;
+                height: 0;
+            }
+            100% {
+                bottom: 0;
+                left: 0;
+                width: 2px;
+                height: 100%;
+            }
+        }
 
         /* --- Mobile Responsive Styles --- */
         @media (max-width: 600px) {
@@ -407,30 +449,26 @@
 
     <!-- Notifications -->
     <div id="notification">Redeemed!</div>
-    <div id="out-of-order-notification">Out of Order!</div>
 
     <script>
         // --- Application Logic ---
         const MAX_REDEMPTIONS = 3;
         const couponsData = [
             { id: 'movie-night-pass', title: 'The "Movie Night" Pass', description: "Redeemable for one synchronized movie night, your pick. I'll handle the technical setup and provide virtual snacks (via GIF)." },
-            { id: 'shut-up-pass', title: 'The "Shut Up" Pass', description: "Redeemable for the final word in one playful debate. I will immediately cease my argument and graciously concede that you were right." },
+            { id: 'shut-up-pass', title: 'The "Shut Up" Pass', description: "I will shut the fuck up and stop talking." },
             { id: 'music-session-pass', title: 'The "Shared Music Session" Pass', description: "Redeemable for one 60-minute session of joint music discovery. We can take turns adding to a queue or listen to a new album." },
-            { id: 'glaze-pass', title: 'The "Glaze" Pass', description: "Need a confidence boost? I will become your personal hype-man, 'glazing' your accomplishment or new picture with unwavering admiration." },
-            { id: 'decide-pass', title: 'The "Help Me Decide" Pass', description: "Stuck between two choices? I will absorb the details of your dilemma and provide a swift, final verdict to free you from choice." },
-            { id: 'free-head-pass', title: 'The (Cheeky) "Free Head" Pass', description: "This is for getting a head start. Cash this in for a 15-second head start in a game, or to get the 'head' of the line for our next activity." },
-            { id: 'quiz-pass', title: 'The "Do a Quiz Together" Pass', description: "'Which type of bread are you?' You find the ridiculous online quiz, we'll take it at the same time and compare results." },
-            { id: 'move-on-pass', title: 'The "Move On" Pass (Totally Fake)', description: "In case you were wondering if it was okay to be friends and live your life, here is your official, completely redundant pass to do so." },
-            { id: 'truth-dare-pass', title: 'The "Truth or Dare" Pass', description: "You choose: Truth (ask me one question I must answer honestly) or Dare (give me one SFW dare I must complete)." },
-            { id: 'singing-lessons-pass', title: 'The "Singing Lessons" Pass', description: "I will teach you my 'unique' vocal techniques over a voice call. You will not improve, but you will probably laugh." },
-            { id: 'future-plan-pass', title: 'The "Future Plan" Pass', description: "The master key. We will immediately pull out our calendars and lock in a date and time to use any other coupon from this list." }
+            { id: 'glaze-pass', title: 'The "Glaze" Pass', description: "I will give you 5 compliments." },
+            { id: 'free-head-pass', title: '"Free Great Head"', description: "I will be your munch!<br><b>*Infinitely redeemable* &infin;</b>" },
+            { id: 'quiz-pass', title: 'The "Do a Quiz Together" Pass', description: "I will find a quiz for us to do." },
+            { id: 'truth-dare-pass', title: 'The "Truth or Dare" Pass', description: "Give me a truth or dare, and you get to choose which one I have to do." },
+            { id: 'singing-lessons-pass', title: 'The "Singing Lessons" Pass', description: "I will teach you my beautiful vocal techniques.<br><em>*Infinitely redeemable*</em>" },
+            { id: 'future-plan-pass', title: 'The "Future Plan" Pass', description: "You get to hang out with me once in the future of your choosing." }
         ];
         const couponContainer = document.getElementById('coupon-container');
         const modalOverlay = document.getElementById('modal-overlay');
         const confirmYesBtn = document.getElementById('confirm-yes');
         const confirmNoBtn = document.getElementById('confirm-no');
         const notification = document.getElementById('notification');
-        const outOfOrderNotification = document.getElementById('out-of-order-notification');
         const mainTitle = document.getElementById('main-title');
         let couponToRedeem = null;
 
@@ -460,17 +498,18 @@
             }, 2000); 
         }
 
-        function showOutOfOrderNotification() {
-            outOfOrderNotification.classList.add('visible');
-            setTimeout(() => {
-                outOfOrderNotification.classList.remove('visible');
-            }, 2000);
-        }
-
         function redeemCoupon() {
             if (!couponToRedeem) return;
 
             let redeemedCounts = loadRedeemedState();
+            
+            // Special cases for infinitely redeemable coupons
+            if (couponToRedeem === 'singing-lessons-pass' || couponToRedeem === 'free-head-pass') {
+                 hideConfirmation();
+                 showNotification();
+                 return; // Don't track count
+            }
+
             let currentCount = redeemedCounts[couponToRedeem] || 0;
             if (currentCount < MAX_REDEMPTIONS) {
                 currentCount++;
@@ -483,7 +522,13 @@
         }
 
         function updateCardState(couponId) {
-            if (couponId === 'move-on-pass') return;
+            if (couponId === 'singing-lessons-pass' || couponId === 'free-head-pass') {
+                const card = document.querySelector(`[data-coupon-id="${couponId}"]`);
+                if (!card) return;
+                const remainingText = card.querySelector('p.remaining');
+                remainingText.textContent = 'Can be used anytime!';
+                return;
+            }
 
             const redeemedCounts = loadRedeemedState();
             const count = redeemedCounts[couponId] || 0;
@@ -511,39 +556,6 @@
             }
         }
 
-        function moveButtonAway(button, event) {
-            const container = button.parentElement;
-            const containerRect = container.getBoundingClientRect();
-
-            // Mouse position relative to the container's viewport coordinates
-            const mouseX = event.clientX - containerRect.left;
-            const mouseY = event.clientY - containerRect.top;
-
-            // Center of the container
-            const containerCenterX = containerRect.width / 2;
-            const containerCenterY = containerRect.height / 2;
-
-            // Vector from mouse to center
-            const vecX = containerCenterX - mouseX;
-            const vecY = containerCenterY - mouseY;
-
-            // Normalize the vector (to get direction)
-            const len = Math.sqrt(vecX * vecX + vecY * vecY) || 1;
-            const normX = vecX / len;
-            const normY = vecY / len;
-            
-            // Maximum distance the button can move from the center
-            const maxTranslateX = (containerRect.width - button.offsetWidth) / 2;
-            const maxTranslateY = (containerRect.height - button.offsetHeight) / 2;
-
-            // New position is at the edge of the container, opposite to the mouse
-            const newX = normX * maxTranslateX;
-            const newY = normY * maxTranslateY;
-
-            button.style.transform = `translate(${newX}px, ${newY}px)`;
-        }
-
-
         function renderCoupons() {
             couponContainer.innerHTML = '';
             couponsData.forEach(coupon => {
@@ -555,10 +567,8 @@
                 let containerClasses = 'btn-container';
 
                 if (coupon.id === 'free-head-pass') {
+                    card.classList.add('animated-border-card');
                     buttonHTML = `<button class="glowbutton">CLAIM PASS</button>`;
-                } else if (coupon.id === 'move-on-pass') {
-                    containerClasses += ' move-on-container';
-                    buttonHTML = `<button class="space-btn move-on-btn"><span>REDEEM</span></button>`;
                 } else {
                     let starsHTML = '';
                     for (let i = 0; i < 40; i++) {
@@ -583,35 +593,8 @@
                     </div>
                 `;
                 const buttonContainer = card.querySelector('.btn-container');
-
-                if (coupon.id === 'move-on-pass') {
-                    const evasiveButton = buttonContainer.querySelector('.move-on-btn');
-                    
-                    // Make the button run away from the mouse, but only on non-touch devices
-                    if (!window.matchMedia("(pointer: coarse)").matches) {
-                        card.addEventListener('mousemove', (e) => {
-                            const buttonRect = evasiveButton.getBoundingClientRect();
-                            const buttonCenterX = buttonRect.left + buttonRect.width / 2;
-                            const buttonCenterY = buttonRect.top + buttonRect.height / 2;
-                            
-                            const distance = Math.sqrt(Math.pow(e.clientX - buttonCenterX, 2) + Math.pow(e.clientY - buttonCenterY, 2));
-
-                            if (distance < 75) { // Increased proximity threshold
-                                moveButtonAway(evasiveButton, e);
-                            }
-                        });
-                    }
-
-                    evasiveButton.addEventListener('click', (e) => {
-                        e.stopPropagation();
-                        showOutOfOrderNotification();
-                    });
-                    const remainingText = card.querySelector('p.remaining');
-                    remainingText.textContent = 'This coupon appears to be malfunctioning.';
-                } else {
-                    buttonContainer.onclick = () => showConfirmation(coupon.id);
-                    updateCardState(coupon.id);
-                }
+                buttonContainer.onclick = () => showConfirmation(coupon.id);
+                updateCardState(coupon.id);
                 
                 couponContainer.appendChild(card);
             });
@@ -655,7 +638,7 @@
             }
         });
         
-        // Only add mousemove listeners for parallax and evasive button on non-touch devices
+        // Only add mousemove listeners for parallax on non-touch devices
         if (!window.matchMedia("(pointer: coarse)").matches) {
             document.addEventListener('mousemove', handleMouseMove);
         }
