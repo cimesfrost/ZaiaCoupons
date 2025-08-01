@@ -315,6 +315,24 @@
         .modal-buttons button:hover { transform: scale(1.05); }
         #confirm-yes { background: #00FF7F; color: #111; }
         #confirm-no { background: #FF1493; color: #fff; }
+        #never-mind-btn {
+            background: #fca5a5;
+            color: #7f1d1d;
+        }
+        #fight-btn {
+            background: #fca5a5;
+            color: #7f1d1d;
+        }
+        #free-head-close-btn, #fight-response-close-btn {
+            background: #a78bfa;
+            color: #f5f3ff;
+            padding: 10px 30px;
+        }
+        #singing-lessons-close-btn {
+            background: #c084fc;
+            color: #f5f3ff;
+            padding: 10px 30px;
+        }
         #notification {
             position: fixed; bottom: 20px; left: 50%; transform: translateX(-50%);
             background: rgba(0, 255, 127, 0.2); backdrop-filter: blur(10px);
@@ -446,6 +464,56 @@
             </div>
         </div>
     </div>
+    
+    <!-- Shut Up Modal -->
+    <div id="shut-up-modal-overlay" class="modal-overlay">
+        <div id="shut-up-modal" class="confirmation-modal">
+            <p>You have some nerve, are you out your right mind, YOU GOT ME FUCKED UP!</p>
+            <div class="modal-buttons">
+                <button id="never-mind-btn">Never mind</button>
+                <button id="fight-btn">Fight</button>
+            </div>
+        </div>
+    </div>
+    
+    <!-- "That's what I thought" Modal -->
+    <div id="thought-modal-overlay" class="modal-overlay">
+        <div class="confirmation-modal">
+            <p>That's what I thought.</p>
+        </div>
+    </div>
+    
+    <!-- Fight Response Modal -->
+    <div id="fight-response-modal-overlay" class="modal-overlay">
+        <div class="confirmation-modal">
+            <p>text the code word "peachy" with a time and location pussycat</p>
+            <div class="modal-buttons">
+                 <button id="fight-response-close-btn">Okay</button>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Free Head Modal -->
+    <div id="free-head-modal-overlay" class="modal-overlay">
+        <div id="free-head-modal" class="confirmation-modal">
+            <p>CONGRATULATIONS YOU MADE A BEAUTIFUL CHOICE!</p>
+            <p style="font-size: 1rem; font-weight: normal; margin-top: 15px;">Text me a time and place with the code word "peachy".</p>
+            <div class="modal-buttons">
+                <button id="free-head-close-btn">Awesome</button>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Singing Lessons Modal -->
+    <div id="singing-lessons-modal-overlay" class="modal-overlay">
+        <div id="singing-lessons-modal" class="confirmation-modal">
+            <p>Yeah, about time you clicked this. I'm glad you came to your senses, I'm going to make you a star!</p>
+            <div class="modal-buttons">
+                <button id="singing-lessons-close-btn">Let's do it!</button>
+            </div>
+        </div>
+    </div>
+
 
     <!-- Notifications -->
     <div id="notification">Redeemed!</div>
@@ -454,20 +522,31 @@
         // --- Application Logic ---
         const MAX_REDEMPTIONS = 3;
         const couponsData = [
-            { id: 'movie-night-pass', title: 'The "Movie Night" Pass', description: "Redeemable for one synchronized movie night, your pick. I'll handle the technical setup and provide virtual snacks (via GIF)." },
+            { id: 'movie-night-pass', title: 'The "Movie Night" Pass', description: "You can choose a really sad, sappy movie. You can choose a really girly movie. You can choose any movie. Or we can make one haha!" },
             { id: 'shut-up-pass', title: 'The "Shut Up" Pass', description: "I will shut the fuck up and stop talking." },
-            { id: 'music-session-pass', title: 'The "Shared Music Session" Pass', description: "Redeemable for one 60-minute session of joint music discovery. We can take turns adding to a queue or listen to a new album." },
-            { id: 'glaze-pass', title: 'The "Glaze" Pass', description: "I will give you 5 compliments." },
-            { id: 'free-head-pass', title: '"Free Great Head"', description: "I will be your munch!<br><b>*Infinitely redeemable* &infin;</b>" },
+            { id: 'music-session-pass', title: 'The "Shared Music Session" Pass', description: "You get a 60 minute session of us just listening to music, vibing out together. We can take turns adding to a queue or we can listen to a new album just enjoying each other's company." },
+            { id: 'glaze-pass', title: 'The "Glaze" Pass', description: "I will give you 5 compliments!" },
+            { id: 'free-head-pass', title: '"Free Great Head"', description: "I will be your munch!<br><b>*Infinitely redeemable*</b>" },
             { id: 'quiz-pass', title: 'The "Do a Quiz Together" Pass', description: "I will find a quiz for us to do." },
             { id: 'truth-dare-pass', title: 'The "Truth or Dare" Pass', description: "Give me a truth or dare, and you get to choose which one I have to do." },
             { id: 'singing-lessons-pass', title: 'The "Singing Lessons" Pass', description: "I will teach you my beautiful vocal techniques.<br><em>*Infinitely redeemable*</em>" },
-            { id: 'future-plan-pass', title: 'The "Future Plan" Pass', description: "You get to hang out with me once in the future of your choosing." }
+            { id: 'future-plan-pass', title: 'The "Future Plan" Pass', description: "You get to hang out with me once in the future of your choosing." },
+            { id: 'lore-drop-pass', title: 'The "Lore Drop" Pass', description: "I will tell you a lore thing about me that you don't know." }
         ];
         const couponContainer = document.getElementById('coupon-container');
         const modalOverlay = document.getElementById('modal-overlay');
         const confirmYesBtn = document.getElementById('confirm-yes');
         const confirmNoBtn = document.getElementById('confirm-no');
+        const shutUpModalOverlay = document.getElementById('shut-up-modal-overlay');
+        const neverMindBtn = document.getElementById('never-mind-btn');
+        const fightBtn = document.getElementById('fight-btn');
+        const thoughtModalOverlay = document.getElementById('thought-modal-overlay');
+        const fightResponseModalOverlay = document.getElementById('fight-response-modal-overlay');
+        const fightResponseCloseBtn = document.getElementById('fight-response-close-btn');
+        const freeHeadModalOverlay = document.getElementById('free-head-modal-overlay');
+        const freeHeadCloseBtn = document.getElementById('free-head-close-btn');
+        const singingLessonsModalOverlay = document.getElementById('singing-lessons-modal-overlay');
+        const singingLessonsCloseBtn = document.getElementById('singing-lessons-close-btn');
         const notification = document.getElementById('notification');
         const mainTitle = document.getElementById('main-title');
         let couponToRedeem = null;
@@ -485,10 +564,36 @@
             couponToRedeem = couponId;
             modalOverlay.classList.add('visible');
         }
+        
+        function showShutUpModal() {
+            shutUpModalOverlay.classList.add('visible');
+        }
+        
+        function showFreeHeadModal() {
+            freeHeadModalOverlay.classList.add('visible');
+            showNotification(); // Show "Redeemed!" right away
+        }
+        
+        function showSingingLessonsModal() {
+            singingLessonsModalOverlay.classList.add('visible');
+            showNotification();
+        }
 
         function hideConfirmation() {
             couponToRedeem = null;
             modalOverlay.classList.remove('visible');
+        }
+        
+        function hideShutUpModal() {
+            shutUpModalOverlay.classList.remove('visible');
+        }
+        
+        function hideFreeHeadModal() {
+            freeHeadModalOverlay.classList.remove('visible');
+        }
+        
+        function hideSingingLessonsModal() {
+            singingLessonsModalOverlay.classList.remove('visible');
         }
         
         function showNotification() {
@@ -568,7 +673,7 @@
 
                 if (coupon.id === 'free-head-pass') {
                     card.classList.add('animated-border-card');
-                    buttonHTML = `<button class="glowbutton">CLAIM PASS</button>`;
+                    buttonHTML = `<button class="glowbutton">CLAIM NOW!</button>`;
                 } else {
                     let starsHTML = '';
                     for (let i = 0; i < 40; i++) {
@@ -593,7 +698,18 @@
                     </div>
                 `;
                 const buttonContainer = card.querySelector('.btn-container');
-                buttonContainer.onclick = () => showConfirmation(coupon.id);
+                
+                if (coupon.id === 'shut-up-pass') {
+                    buttonContainer.onclick = showShutUpModal;
+                } else if (coupon.id === 'free-head-pass') {
+                    buttonContainer.onclick = showFreeHeadModal;
+                } else if (coupon.id === 'singing-lessons-pass') {
+                    buttonContainer.onclick = showSingingLessonsModal;
+                }
+                else {
+                    buttonContainer.onclick = () => showConfirmation(coupon.id);
+                }
+                
                 updateCardState(coupon.id);
                 
                 couponContainer.appendChild(card);
@@ -632,11 +748,33 @@
         // Event Listeners
         confirmYesBtn.addEventListener('click', redeemCoupon);
         confirmNoBtn.addEventListener('click', hideConfirmation);
-        modalOverlay.addEventListener('click', (e) => {
-            if (e.target === modalOverlay) {
-                hideConfirmation();
-            }
+        
+        shutUpModalOverlay.addEventListener('click', (e) => {
+            if (e.target === shutUpModalOverlay) hideShutUpModal();
         });
+        neverMindBtn.addEventListener('click', () => {
+            hideShutUpModal();
+            thoughtModalOverlay.classList.add('visible');
+            setTimeout(() => thoughtModalOverlay.classList.remove('visible'), 2000);
+        });
+        fightBtn.addEventListener('click', () => {
+            hideShutUpModal();
+            fightResponseModalOverlay.classList.add('visible');
+        });
+        fightResponseModalOverlay.addEventListener('click', (e) => {
+            if (e.target === fightResponseModalOverlay) fightResponseModalOverlay.classList.remove('visible');
+        });
+        fightResponseCloseBtn.addEventListener('click', () => fightResponseModalOverlay.classList.remove('visible'));
+
+        freeHeadModalOverlay.addEventListener('click', (e) => {
+            if (e.target === freeHeadModalOverlay) hideFreeHeadModal();
+        });
+        freeHeadCloseBtn.addEventListener('click', hideFreeHeadModal);
+        
+        singingLessonsModalOverlay.addEventListener('click', (e) => {
+            if (e.target === singingLessonsModalOverlay) hideSingingLessonsModal();
+        });
+        singingLessonsCloseBtn.addEventListener('click', hideSingingLessonsModal);
         
         // Only add mousemove listeners for parallax on non-touch devices
         if (!window.matchMedia("(pointer: coarse)").matches) {
