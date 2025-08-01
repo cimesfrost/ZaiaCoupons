@@ -70,6 +70,7 @@
             display: flex;
             flex-wrap: wrap;
             justify-content: center;
+            text-align: center;
         }
         
         h1 span {
@@ -146,25 +147,29 @@
             pointer-events: none;
         }
         
-        /* --- NEW BUTTON STYLES (From Uiverse.io by Yaksh37) --- */
+        /* --- Button Styles --- */
         .btn-container {
-            width: 180px; /* Adjusted size */
-            height: 55px; /* Adjusted size */
+            width: 180px; 
+            height: 55px; 
             position: relative;
             overflow: visible;
             flex-shrink: 0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
         }
 
         .space-btn {
             width: 100%;
             height: 100%;
-            position: relative;
+            position: absolute; 
             overflow: hidden;
             border: 0;
             outline: 0;
             border-radius: 11px;
             background: linear-gradient(80deg, #f8bbd0, #e1bee7, #b3e5fc, #b2dfdb);
             cursor: pointer;
+            transition: transform 0.2s ease-out;
         }
 
         .btn-container::after {
@@ -173,7 +178,7 @@
             height: 100%;
             position: absolute;
             left: 0;
-            top: 15px; /* Adjusted shadow position */
+            top: 15px; 
             z-index: -1;
             background: linear-gradient(80deg, #f8bbd0, #e1bee7, #b3e5fc, #b2dfdb);
             filter: blur(15px);
@@ -199,7 +204,7 @@
         }
 
         .space-btn span {
-            color: #333; /* Darker text for light button */
+            color: #333; 
             font-weight: 700;
             font-size: 16px;
             text-shadow: 0 0 2px rgba(255,255,255,0.5);
@@ -226,8 +231,74 @@
 
         .space-btn .shooting-star-1 { animation: fallingStar1 4s 6s cubic-bezier(0.15, 0.83, 0.66, 1) infinite; }
         .space-btn .shooting-star-2 { animation: fallingStar2 2s 10s cubic-bezier(0.15, 0.83, 0.66, 1) infinite; }
-        .space-btn .shooting-star-3 { animation: fallingStar3 8s 20s cubic-bezier(0.15, 0.83, 0.66, 1) infinite; }
-        .space-btn .shooting-star-4 { animation: fallingStar4 4s 6s cubic-bezier(0.15, 0.83, 0.66, 1) infinite; }
+        
+        /* --- Glow Button Styles --- */
+        .glowbutton {
+         --glow-color: rgb(176, 252, 255);
+         --glow-spread-color: rgba(123, 251, 255, 0.781);
+         --enhanced-glow-color: rgb(206, 255, 255);
+         --btn-color: rgb(61, 127, 136);
+         border: 0.25em solid var(--glow-color);
+         padding: 1em 2em;
+         color: var(--glow-color);
+         font-size: 15px;
+         font-weight: bold;
+         background-color: var(--btn-color);
+         border-radius: 1em;
+         outline: none;
+         box-shadow: 0 0 1em 0.25em var(--glow-color),
+           0 0 4em 1em var(--glow-spread-color),
+           inset 0 0 0.75em 0.25em var(--glow-color);
+         text-shadow: 0 0 0.5em var(--glow-color);
+         position: relative;
+         transition: all 0.3s;
+         cursor: pointer;
+        }
+
+        .glowbutton::after {
+         pointer-events: none;
+         content: "";
+         position: absolute;
+         top: 120%;
+         left: 0;
+         height: 100%;
+         width: 100%;
+         background-color: var(--glow-spread-color);
+         filter: blur(2em);
+         opacity: 0.7;
+         transform: perspective(1.5em) rotateX(35deg) scale(1, 0.6);
+        }
+
+        .glowbutton:hover {
+         color: var(--btn-color);
+         background-color: var(--glow-color);
+         box-shadow: 0 0 1em 0.25em var(--glow-color),
+           0 0 4em 2em var(--glow-spread-color),
+           inset 0 0 0.75em 0.25em var(--glow-color);
+        }
+
+        .glowbutton:active {
+         box-shadow: 0 0 0.6em 0.25em var(--glow-color),
+           0 0 2.5em 2em var(--glow-spread-color),
+           inset 0 0 0.5em 0.25em var(--glow-color);
+        }
+
+        /* --- Move On Button Specific Styles --- */
+        .move-on-container {
+            width: 50px; /* Made really really tiny */
+            height: 20px; /* Made really really tiny */
+        }
+        .move-on-container:hover {
+            transform: scale(1); /* Disable card hover effect for this one */
+        }
+        .move-on-btn {
+            width: 100%;
+            height: 100%;
+        }
+        .move-on-btn span {
+            font-size: 7px; /* Made really really tiny */
+            padding: 0 2px;
+        }
 
 
         /* --- Modal and Notification Styles --- */
@@ -251,7 +322,7 @@
         .modal-buttons button:hover { transform: scale(1.05); }
         #confirm-yes { background: #00FF7F; color: #111; }
         #confirm-no { background: #FF1493; color: #fff; }
-        #notification {
+        #notification, #out-of-order-notification {
             position: fixed; bottom: 20px; left: 50%; transform: translateX(-50%);
             background: rgba(0, 255, 127, 0.2); backdrop-filter: blur(10px);
             -webkit-backdrop-filter: blur(10px); color: #fff; padding: 15px 30px;
@@ -259,7 +330,14 @@
             font-weight: 600; z-index: 101; opacity: 0;
             transition: opacity 0.5s ease, bottom 0.5s ease; pointer-events: none;
         }
-        #notification.visible { opacity: 1; bottom: 30px; }
+        #out-of-order-notification {
+            background: rgba(255, 100, 100, 0.2);
+            border: 1px solid rgba(255, 100, 100, 0.3);
+        }
+        #notification.visible, #out-of-order-notification.visible {
+            opacity: 1;
+            bottom: 30px;
+        }
 
         /* --- Keyframes for Animations --- */
         @keyframes move-twink-back { from { background-position: 0 0; } to { background-position: -10000px 5000px; } }
@@ -271,8 +349,39 @@
         @keyframes blink { 0%, 100% { box-shadow: 0 0 10px 0 white; } 50% { box-shadow: 0 0 10px 2px white; } }
         @keyframes fallingStar1 { 0% { top: -10px; left: 220px; opacity: 1; } 100% { top: 200px; left: -20px; opacity: 1; } }
         @keyframes fallingStar2 { 0% { top: -10px; left: 150px; opacity: 1; } 100% { top: 200px; left: -90px; opacity: 1; } }
-        @keyframes fallingStar3 { 0% { top: -10px; left: 80px; opacity: 1; } 100% { top: 200px; left: -160px; opacity: 1; } }
-        @keyframes fallingStar4 { 0% { top: -10px; left: 0px; opacity: 1; } 100% { top: 200px; left: -240px; opacity: 1; } }
+
+        /* --- Mobile Responsive Styles --- */
+        @media (max-width: 600px) {
+            .content-wrapper {
+                padding: 15px;
+            }
+            h1 {
+                font-size: 2.5rem;
+            }
+            .card {
+                flex-direction: column;
+                text-align: center;
+                gap: 20px;
+            }
+            .card-info {
+                padding-right: 0;
+            }
+            .card-info .description {
+                max-width: 100%;
+            }
+            .btn-container {
+                width: 150px;
+                height: 50px;
+            }
+            .glowbutton {
+                font-size: 14px;
+                padding: 0.8em 1.5em;
+            }
+            .confirmation-modal {
+                width: 90%;
+                padding: 20px;
+            }
+        }
     </style>
 </head>
 <body>
@@ -296,8 +405,9 @@
         </div>
     </div>
 
-    <!-- Redeemed Notification -->
+    <!-- Notifications -->
     <div id="notification">Redeemed!</div>
+    <div id="out-of-order-notification">Out of Order!</div>
 
     <script>
         // --- Application Logic ---
@@ -320,6 +430,7 @@
         const confirmYesBtn = document.getElementById('confirm-yes');
         const confirmNoBtn = document.getElementById('confirm-no');
         const notification = document.getElementById('notification');
+        const outOfOrderNotification = document.getElementById('out-of-order-notification');
         const mainTitle = document.getElementById('main-title');
         let couponToRedeem = null;
 
@@ -346,7 +457,14 @@
             notification.classList.add('visible');
             setTimeout(() => {
                 notification.classList.remove('visible');
-            }, 2000); // Notification stays for 2 seconds
+            }, 2000); 
+        }
+
+        function showOutOfOrderNotification() {
+            outOfOrderNotification.classList.add('visible');
+            setTimeout(() => {
+                outOfOrderNotification.classList.remove('visible');
+            }, 2000);
         }
 
         function redeemCoupon() {
@@ -365,6 +483,8 @@
         }
 
         function updateCardState(couponId) {
+            if (couponId === 'move-on-pass') return;
+
             const redeemedCounts = loadRedeemedState();
             const count = redeemedCounts[couponId] || 0;
             const remaining = MAX_REDEMPTIONS - count;
@@ -372,17 +492,57 @@
             if (!card) return;
             const remainingText = card.querySelector('p.remaining');
             const buttonContainer = card.querySelector('.btn-container');
-            const buttonText = buttonContainer.querySelector('span');
+            const button = buttonContainer.querySelector('button');
 
             if (remaining <= 0) {
                 card.classList.add('redeemed');
                 remainingText.textContent = 'Fully Redeemed!';
-                buttonText.textContent = 'USED';
+                
+                if (button.classList.contains('glowbutton')) {
+                    button.textContent = 'USED';
+                } else {
+                    const buttonTextSpan = button.querySelector('span');
+                    if (buttonTextSpan) buttonTextSpan.textContent = 'USED';
+                }
+
                 buttonContainer.onclick = null;
             } else {
                 remainingText.textContent = `${remaining} of ${MAX_REDEMPTIONS} uses left`;
             }
         }
+
+        function moveButtonAway(button, event) {
+            const container = button.parentElement;
+            const containerRect = container.getBoundingClientRect();
+
+            // Mouse position relative to the container's viewport coordinates
+            const mouseX = event.clientX - containerRect.left;
+            const mouseY = event.clientY - containerRect.top;
+
+            // Center of the container
+            const containerCenterX = containerRect.width / 2;
+            const containerCenterY = containerRect.height / 2;
+
+            // Vector from mouse to center
+            const vecX = containerCenterX - mouseX;
+            const vecY = containerCenterY - mouseY;
+
+            // Normalize the vector (to get direction)
+            const len = Math.sqrt(vecX * vecX + vecY * vecY) || 1;
+            const normX = vecX / len;
+            const normY = vecY / len;
+            
+            // Maximum distance the button can move from the center
+            const maxTranslateX = (containerRect.width - button.offsetWidth) / 2;
+            const maxTranslateY = (containerRect.height - button.offsetHeight) / 2;
+
+            // New position is at the edge of the container, opposite to the mouse
+            const newX = normX * maxTranslateX;
+            const newY = normY * maxTranslateY;
+
+            button.style.transform = `translate(${newX}px, ${newY}px)`;
+        }
+
 
         function renderCoupons() {
             couponContainer.innerHTML = '';
@@ -391,16 +551,26 @@
                 card.className = 'card';
                 card.dataset.couponId = coupon.id;
                 
-                // Create the button's complex inner HTML with random stars
-                let starsHTML = '';
-                for (let i = 0; i < 40; i++) {
-                    const style = `position: absolute; left: ${Math.random() * 100}%; top: ${Math.random() * 100}%; animation-delay: ${Math.random() * 5}s; transform: scale(${Math.random() * 1.5 + 0.1});`;
-                    starsHTML += `<div style="${style}" class="star"></div>`;
+                let buttonHTML;
+                let containerClasses = 'btn-container';
+
+                if (coupon.id === 'free-head-pass') {
+                    buttonHTML = `<button class="glowbutton">CLAIM PASS</button>`;
+                } else if (coupon.id === 'move-on-pass') {
+                    containerClasses += ' move-on-container';
+                    buttonHTML = `<button class="space-btn move-on-btn"><span>REDEEM</span></button>`;
+                } else {
+                    let starsHTML = '';
+                    for (let i = 0; i < 40; i++) {
+                        const style = `position: absolute; left: ${Math.random() * 100}%; top: ${Math.random() * 100}%; animation-delay: ${Math.random() * 5}s; transform: scale(${Math.random() * 1.5 + 0.1});`;
+                        starsHTML += `<div style="${style}" class="star"></div>`;
+                    }
+                    starsHTML += `
+                        <div style="animation-delay: ${Math.random() * 5}s;" class="shooting-star shooting-star-1"></div>
+                        <div style="animation-delay: ${Math.random() * 5 + 5}s;" class="shooting-star shooting-star-2"></div>
+                    `;
+                    buttonHTML = `<button class="space-btn"><span>REDEEM</span>${starsHTML}</button>`;
                 }
-                starsHTML += `
-                    <div style="animation-delay: ${Math.random() * 5}s;" class="shooting-star shooting-star-1"></div>
-                    <div style="animation-delay: ${Math.random() * 5 + 5}s;" class="shooting-star shooting-star-2"></div>
-                `;
 
                 card.innerHTML = `
                     <div class="card-info">
@@ -408,17 +578,42 @@
                         <p class="description">${coupon.description}</p>
                         <p class="remaining"></p>
                     </div>
-                    <div class="btn-container">
-                        <button class="space-btn">
-                            <span>REDEEM</span>
-                            ${starsHTML}
-                        </button>
+                    <div class="${containerClasses}">
+                        ${buttonHTML}
                     </div>
                 `;
                 const buttonContainer = card.querySelector('.btn-container');
-                buttonContainer.onclick = () => showConfirmation(coupon.id);
+
+                if (coupon.id === 'move-on-pass') {
+                    const evasiveButton = buttonContainer.querySelector('.move-on-btn');
+                    
+                    // Make the button run away from the mouse, but only on non-touch devices
+                    if (!window.matchMedia("(pointer: coarse)").matches) {
+                        card.addEventListener('mousemove', (e) => {
+                            const buttonRect = evasiveButton.getBoundingClientRect();
+                            const buttonCenterX = buttonRect.left + buttonRect.width / 2;
+                            const buttonCenterY = buttonRect.top + buttonRect.height / 2;
+                            
+                            const distance = Math.sqrt(Math.pow(e.clientX - buttonCenterX, 2) + Math.pow(e.clientY - buttonCenterY, 2));
+
+                            if (distance < 75) { // Increased proximity threshold
+                                moveButtonAway(evasiveButton, e);
+                            }
+                        });
+                    }
+
+                    evasiveButton.addEventListener('click', (e) => {
+                        e.stopPropagation();
+                        showOutOfOrderNotification();
+                    });
+                    const remainingText = card.querySelector('p.remaining');
+                    remainingText.textContent = 'This coupon appears to be malfunctioning.';
+                } else {
+                    buttonContainer.onclick = () => showConfirmation(coupon.id);
+                    updateCardState(coupon.id);
+                }
+                
                 couponContainer.appendChild(card);
-                updateCardState(coupon.id);
             });
         }
         
@@ -459,7 +654,11 @@
                 hideConfirmation();
             }
         });
-        document.addEventListener('mousemove', handleMouseMove);
+        
+        // Only add mousemove listeners for parallax and evasive button on non-touch devices
+        if (!window.matchMedia("(pointer: coarse)").matches) {
+            document.addEventListener('mousemove', handleMouseMove);
+        }
 
         // Initial Load
         document.addEventListener('DOMContentLoaded', () => {
