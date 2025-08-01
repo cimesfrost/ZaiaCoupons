@@ -1,0 +1,471 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Zaia's Coupon Book</title>
+    <style>
+        /* --- Font Import --- */
+        @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&family=Dancing+Script:wght@700&family=Lobster&display=swap');
+
+        /* --- Base Styles & Starry Night Theme --- */
+        body {
+            font-family: 'Poppins', sans-serif;
+            color: #EAEAEA;
+            margin: 0;
+            background: #000; /* Solid black background */
+            overflow-x: hidden; /* Prevent horizontal scrollbars */
+        }
+
+        /* --- Floral Starfield Background --- */
+        #stars, #stars2, #stars3 {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            width: 100%;
+            height: 100%;
+            display: block;
+            z-index: 0;
+        }
+
+        /* Layer 1: Lighter Pink Flowers */
+        #stars {
+            background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='100%25' height='100%25'%3E%3Cdefs%3E%3Cpattern id='p1' width='300' height='300' patternUnits='userSpaceOnUse'%3E%3Cg fill='%23FFB6C1'%3E%3Ccircle cx='50' cy='50' r='2'/%3E%3Ccircle cx='45' cy='50' r='2'/%3E%3Ccircle cx='55' cy='50' r='2'/%3E%3Ccircle cx='50' cy='45' r='2'/%3E%3Ccircle cx='50' cy='55' r='2'/%3E%3C/g%3E%3Cg fill='%23FFB6C1' opacity='0.5'%3E%3Ccircle cx='150' cy='150' r='1'/%3E%3Ccircle cx='146' cy='150' r='1'/%3E%3Ccircle cx='154' cy='150' r='1'/%3E%3Ccircle cx='150' cy='146' r='1'/%3E%3Ccircle cx='150' cy='154' r='1'/%3E%3C/g%3E%3C/pattern%3E%3C/defs%3E%3Crect width='100%25' height='100%25' fill='url(%23p1)'/%3E%3C/svg%3E");
+            background-size: 300px 300px;
+            animation: move-twink-back 200s linear infinite;
+        }
+
+        /* Layer 2: Soft Teal Flowers */
+        #stars2 {
+            background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='100%25' height='100%25'%3E%3Cdefs%3E%3Cpattern id='p2' width='400' height='400' patternUnits='userSpaceOnUse'%3E%3Cg fill='%23B2DFDB'%3E%3Ccircle cx='100' cy='100' r='2'/%3E%3Ccircle cx='95' cy='100' r='2'/%3E%3Ccircle cx='105' cy='100' r='2'/%3E%3Ccircle cx='100' cy='95' r='2'/%3E%3Ccircle cx='100' cy='105' r='2'/%3E%3C/g%3E%3Cg fill='%23B2DFDB' opacity='0.5'%3E%3Ccircle cx='300' cy='300' r='1'/%3E%3Ccircle cx='296' cy='300' r='1'/%3E%3Ccircle cx='304' cy='300' r='1'/%3E%3Ccircle cx='300' cy='296' r='1'/%3E%3Ccircle cx='300' cy='304' r='1'/%3E%3C/g%3E%3C/pattern%3E%3C/defs%3E%3Crect width='100%25' height='100%25' fill='url(%23p2)'/%3E%3C/svg%3E");
+            background-size: 400px 400px;
+            animation: move-twink-back 150s linear infinite;
+        }
+
+        /* Layer 3: Sky Blue Flowers */
+        #stars3 {
+            background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='100%25' height='100%25'%3E%3Cdefs%3E%3Cpattern id='p3' width='500' height='500' patternUnits='userSpaceOnUse'%3E%3Cg fill='%2387CEEB'%3E%3Ccircle cx='250' cy='250' r='2'/%3E%3Ccircle cx='245' cy='250' r='2'/%3E%3Ccircle cx='255' cy='250' r='2'/%3E%3Ccircle cx='250' cy='245' r='2'/%3E%3Ccircle cx='250' cy='255' r='2'/%3E%3C/g%3E%3Cg fill='%2387CEEB' opacity='0.5'%3E%3Ccircle cx='50' cy='450' r='1'/%3E%3Ccircle cx='46' cy='450' r='1'/%3E%3Ccircle cx='54' cy='450' r='1'/%3E%3Ccircle cx='50' cy='446' r='1'/%3E%3Ccircle cx='50' cy='454' r='1'/%3E%3C/g%3E%3C/pattern%3E%3C/defs%3E%3Crect width='100%25' height='100%25' fill='url(%23p3)'/%3E%3C/svg%3E");
+            background-size: 500px 500px;
+            animation: move-twink-back 100s linear infinite;
+        }
+        
+        .content-wrapper {
+            position: relative;
+            z-index: 1;
+            padding: 20px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        h1 {
+            font-family: 'Lobster', cursive;
+            font-size: 4rem;
+            font-weight: 400;
+            color: #FFFFFF;
+            text-shadow: 0 0 15px rgba(255, 182, 193, 0.7);
+            margin-bottom: 30px;
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+        }
+        
+        h1 span {
+            position: relative;
+            display: inline-block;
+            animation: float 3s ease-in-out infinite;
+            animation-delay: var(--delay);
+        }
+
+        #coupon-container {
+            width: 100%;
+            max-width: 600px;
+            display: grid;
+            gap: 25px;
+        }
+
+        /* --- Coupon Card Styling --- */
+        .card {
+            background: rgba(225, 190, 231, 0.2); /* Soft lavender background */
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+            border-radius: 20px;
+            padding: 20px 25px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center; /* Center align items vertically */
+            border: 1px solid rgba(225, 190, 231, 0.25); /* Matching border */
+            box-shadow: 0 8px 30px rgba(0,0,0,0.1);
+            transition: all 0.3s ease, transform 0.1s linear; /* Parallax transition */
+        }
+
+        .card-info {
+            flex-grow: 1;
+            padding-right: 20px;
+        }
+
+        .card-info h2 {
+            font-family: 'Dancing Script', cursive;
+            margin: 0 0 5px 0;
+            font-size: 1.8rem;
+            color: #fce4ec; /* Soft pink text */
+        }
+        
+        .card-info .description {
+            font-size: 0.8rem;
+            color: #e1bee7; /* Soft lavender text */
+            margin-top: 10px;
+            font-style: italic;
+            line-height: 1.4;
+            max-width: 350px;
+        }
+
+        .card-info p.remaining {
+            margin: 10px 0 0 0;
+            font-size: 0.9rem;
+            color: #f8bbd0; /* Light pink text */
+            font-weight: 600;
+        }
+
+        /* --- Redeemed State Styling --- */
+        .card.redeemed {
+            background: rgba(30, 30, 50, 0.5);
+        }
+        .card.redeemed .card-info h2,
+        .card.redeemed .card-info p {
+            color: #555;
+            text-decoration: line-through;
+            text-shadow: none;
+        }
+
+        .card.redeemed .btn-container {
+            filter: grayscale(80%);
+            cursor: not-allowed;
+            pointer-events: none;
+        }
+        
+        /* --- NEW BUTTON STYLES (From Uiverse.io by Yaksh37) --- */
+        .btn-container {
+            width: 180px; /* Adjusted size */
+            height: 55px; /* Adjusted size */
+            position: relative;
+            overflow: visible;
+            flex-shrink: 0;
+        }
+
+        .space-btn {
+            width: 100%;
+            height: 100%;
+            position: relative;
+            overflow: hidden;
+            border: 0;
+            outline: 0;
+            border-radius: 11px;
+            background: linear-gradient(80deg, #f8bbd0, #e1bee7, #b3e5fc, #b2dfdb);
+            cursor: pointer;
+        }
+
+        .btn-container::after {
+            content: "";
+            width: 100%;
+            height: 100%;
+            position: absolute;
+            left: 0;
+            top: 15px; /* Adjusted shadow position */
+            z-index: -1;
+            background: linear-gradient(80deg, #f8bbd0, #e1bee7, #b3e5fc, #b2dfdb);
+            filter: blur(15px);
+            opacity: 0;
+            transition: all 0.6s cubic-bezier(0.15, 0.83, 0.66, 1);
+        }
+
+        .btn-container:hover {
+            transform: scale(1.1);
+            transition: all 0.6s cubic-bezier(0.15, 0.83, 0.66, 1);
+        }
+
+        .btn-container:hover::after {
+            opacity: 1;
+        }
+
+        .btn-container:active {
+            transform: scale(1);
+        }
+
+        .btn-container:active::after {
+            opacity: 0;
+        }
+
+        .space-btn span {
+            color: #333; /* Darker text for light button */
+            font-weight: 700;
+            font-size: 16px;
+            text-shadow: 0 0 2px rgba(255,255,255,0.5);
+        }
+
+        .space-btn .star {
+            width: 1px;
+            height: 1px;
+            background-color: white;
+            border-radius: 50%;
+            animation: blink 2s cubic-bezier(0.15, 0.83, 0.66, 1) infinite;
+            position: absolute;
+        }
+
+        .space-btn .shooting-star {
+            width: 80px;
+            height: 1px;
+            position: absolute;
+            background: linear-gradient(80deg, #ffffffff, #ffffff00);
+            border-radius: 50%;
+            transform: rotate(-40deg);
+            opacity: 0;
+        }
+
+        .space-btn .shooting-star-1 { animation: fallingStar1 4s 6s cubic-bezier(0.15, 0.83, 0.66, 1) infinite; }
+        .space-btn .shooting-star-2 { animation: fallingStar2 2s 10s cubic-bezier(0.15, 0.83, 0.66, 1) infinite; }
+        .space-btn .shooting-star-3 { animation: fallingStar3 8s 20s cubic-bezier(0.15, 0.83, 0.66, 1) infinite; }
+        .space-btn .shooting-star-4 { animation: fallingStar4 4s 6s cubic-bezier(0.15, 0.83, 0.66, 1) infinite; }
+
+
+        /* --- Modal and Notification Styles --- */
+        .modal-overlay {
+            position: fixed; inset: 0; background: rgba(0,0,0,0.7); z-index: 100;
+            display: flex; justify-content: center; align-items: center;
+            opacity: 0; pointer-events: none; transition: opacity 0.3s ease;
+        }
+        .modal-overlay.visible { opacity: 1; pointer-events: auto; }
+        .confirmation-modal {
+            background: rgba(225, 190, 231, 0.15); backdrop-filter: blur(15px);
+            -webkit-backdrop-filter: blur(15px); border-radius: 20px;
+            padding: 30px 40px; text-align: center; border: 1px solid rgba(225, 190, 231, 0.2);
+            box-shadow: 0 8px 30px rgba(0,0,0,0.2);
+        }
+        .confirmation-modal p { font-size: 1.2rem; font-weight: 600; margin: 0 0 20px 0; }
+        .modal-buttons button {
+            padding: 10px 20px; border: none; border-radius: 8px; font-weight: 600;
+            cursor: pointer; margin: 0 10px; transition: transform 0.2s ease;
+        }
+        .modal-buttons button:hover { transform: scale(1.05); }
+        #confirm-yes { background: #00FF7F; color: #111; }
+        #confirm-no { background: #FF1493; color: #fff; }
+        #notification {
+            position: fixed; bottom: 20px; left: 50%; transform: translateX(-50%);
+            background: rgba(0, 255, 127, 0.2); backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px); color: #fff; padding: 15px 30px;
+            border-radius: 12px; border: 1px solid rgba(0, 255, 127, 0.3);
+            font-weight: 600; z-index: 101; opacity: 0;
+            transition: opacity 0.5s ease, bottom 0.5s ease; pointer-events: none;
+        }
+        #notification.visible { opacity: 1; bottom: 30px; }
+
+        /* --- Keyframes for Animations --- */
+        @keyframes move-twink-back { from { background-position: 0 0; } to { background-position: -10000px 5000px; } }
+        @keyframes titleGlow {
+            0% { text-shadow: 0 0 15px #ffb6c1; } 33% { text-shadow: 0 0 15px #b2dfdb; }
+            66% { text-shadow: 0 0 15px #87ceeb; } 100% { text-shadow: 0 0 15px #ffb6c1; }
+        }
+        @keyframes float { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-4px); } }
+        @keyframes blink { 0%, 100% { box-shadow: 0 0 10px 0 white; } 50% { box-shadow: 0 0 10px 2px white; } }
+        @keyframes fallingStar1 { 0% { top: -10px; left: 220px; opacity: 1; } 100% { top: 200px; left: -20px; opacity: 1; } }
+        @keyframes fallingStar2 { 0% { top: -10px; left: 150px; opacity: 1; } 100% { top: 200px; left: -90px; opacity: 1; } }
+        @keyframes fallingStar3 { 0% { top: -10px; left: 80px; opacity: 1; } 100% { top: 200px; left: -160px; opacity: 1; } }
+        @keyframes fallingStar4 { 0% { top: -10px; left: 0px; opacity: 1; } 100% { top: 200px; left: -240px; opacity: 1; } }
+    </style>
+</head>
+<body>
+    <div id="stars"></div>
+    <div id="stars2"></div>
+    <div id="stars3"></div>
+
+    <div class="content-wrapper">
+        <h1 id="main-title"></h1>
+        <div id="coupon-container"></div>
+    </div>
+
+    <!-- Confirmation Modal -->
+    <div id="modal-overlay" class="modal-overlay">
+        <div id="confirmation-modal" class="confirmation-modal">
+            <p>Are you sure?</p>
+            <div class="modal-buttons">
+                <button id="confirm-yes">Yes</button>
+                <button id="confirm-no">No</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Redeemed Notification -->
+    <div id="notification">Redeemed!</div>
+
+    <script>
+        // --- Application Logic ---
+        const MAX_REDEMPTIONS = 3;
+        const couponsData = [
+            { id: 'movie-night-pass', title: 'The "Movie Night" Pass', description: "Redeemable for one synchronized movie night, your pick. I'll handle the technical setup and provide virtual snacks (via GIF)." },
+            { id: 'shut-up-pass', title: 'The "Shut Up" Pass', description: "Redeemable for the final word in one playful debate. I will immediately cease my argument and graciously concede that you were right." },
+            { id: 'music-session-pass', title: 'The "Shared Music Session" Pass', description: "Redeemable for one 60-minute session of joint music discovery. We can take turns adding to a queue or listen to a new album." },
+            { id: 'glaze-pass', title: 'The "Glaze" Pass', description: "Need a confidence boost? I will become your personal hype-man, 'glazing' your accomplishment or new picture with unwavering admiration." },
+            { id: 'decide-pass', title: 'The "Help Me Decide" Pass', description: "Stuck between two choices? I will absorb the details of your dilemma and provide a swift, final verdict to free you from choice." },
+            { id: 'free-head-pass', title: 'The (Cheeky) "Free Head" Pass', description: "This is for getting a head start. Cash this in for a 15-second head start in a game, or to get the 'head' of the line for our next activity." },
+            { id: 'quiz-pass', title: 'The "Do a Quiz Together" Pass', description: "'Which type of bread are you?' You find the ridiculous online quiz, we'll take it at the same time and compare results." },
+            { id: 'move-on-pass', title: 'The "Move On" Pass (Totally Fake)', description: "In case you were wondering if it was okay to be friends and live your life, here is your official, completely redundant pass to do so." },
+            { id: 'truth-dare-pass', title: 'The "Truth or Dare" Pass', description: "You choose: Truth (ask me one question I must answer honestly) or Dare (give me one SFW dare I must complete)." },
+            { id: 'singing-lessons-pass', title: 'The "Singing Lessons" Pass', description: "I will teach you my 'unique' vocal techniques over a voice call. You will not improve, but you will probably laugh." },
+            { id: 'future-plan-pass', title: 'The "Future Plan" Pass', description: "The master key. We will immediately pull out our calendars and lock in a date and time to use any other coupon from this list." }
+        ];
+        const couponContainer = document.getElementById('coupon-container');
+        const modalOverlay = document.getElementById('modal-overlay');
+        const confirmYesBtn = document.getElementById('confirm-yes');
+        const confirmNoBtn = document.getElementById('confirm-no');
+        const notification = document.getElementById('notification');
+        const mainTitle = document.getElementById('main-title');
+        let couponToRedeem = null;
+
+        function loadRedeemedState() {
+            const state = localStorage.getItem('couponState');
+            return state ? JSON.parse(state) : {};
+        }
+
+        function saveRedeemedState(state) {
+            localStorage.setItem('couponState', JSON.stringify(state));
+        }
+        
+        function showConfirmation(couponId) {
+            couponToRedeem = couponId;
+            modalOverlay.classList.add('visible');
+        }
+
+        function hideConfirmation() {
+            couponToRedeem = null;
+            modalOverlay.classList.remove('visible');
+        }
+        
+        function showNotification() {
+            notification.classList.add('visible');
+            setTimeout(() => {
+                notification.classList.remove('visible');
+            }, 2000); // Notification stays for 2 seconds
+        }
+
+        function redeemCoupon() {
+            if (!couponToRedeem) return;
+
+            let redeemedCounts = loadRedeemedState();
+            let currentCount = redeemedCounts[couponToRedeem] || 0;
+            if (currentCount < MAX_REDEMPTIONS) {
+                currentCount++;
+                redeemedCounts[couponToRedeem] = currentCount;
+                saveRedeemedState(redeemedCounts);
+                updateCardState(couponToRedeem);
+                hideConfirmation();
+                showNotification();
+            }
+        }
+
+        function updateCardState(couponId) {
+            const redeemedCounts = loadRedeemedState();
+            const count = redeemedCounts[couponId] || 0;
+            const remaining = MAX_REDEMPTIONS - count;
+            const card = document.querySelector(`[data-coupon-id="${couponId}"]`);
+            if (!card) return;
+            const remainingText = card.querySelector('p.remaining');
+            const buttonContainer = card.querySelector('.btn-container');
+            const buttonText = buttonContainer.querySelector('span');
+
+            if (remaining <= 0) {
+                card.classList.add('redeemed');
+                remainingText.textContent = 'Fully Redeemed!';
+                buttonText.textContent = 'USED';
+                buttonContainer.onclick = null;
+            } else {
+                remainingText.textContent = `${remaining} of ${MAX_REDEMPTIONS} uses left`;
+            }
+        }
+
+        function renderCoupons() {
+            couponContainer.innerHTML = '';
+            couponsData.forEach(coupon => {
+                const card = document.createElement('div');
+                card.className = 'card';
+                card.dataset.couponId = coupon.id;
+                
+                // Create the button's complex inner HTML with random stars
+                let starsHTML = '';
+                for (let i = 0; i < 40; i++) {
+                    const style = `position: absolute; left: ${Math.random() * 100}%; top: ${Math.random() * 100}%; animation-delay: ${Math.random() * 5}s; transform: scale(${Math.random() * 1.5 + 0.1});`;
+                    starsHTML += `<div style="${style}" class="star"></div>`;
+                }
+                starsHTML += `
+                    <div style="animation-delay: ${Math.random() * 5}s;" class="shooting-star shooting-star-1"></div>
+                    <div style="animation-delay: ${Math.random() * 5 + 5}s;" class="shooting-star shooting-star-2"></div>
+                `;
+
+                card.innerHTML = `
+                    <div class="card-info">
+                        <h2>${coupon.title}</h2>
+                        <p class="description">${coupon.description}</p>
+                        <p class="remaining"></p>
+                    </div>
+                    <div class="btn-container">
+                        <button class="space-btn">
+                            <span>REDEEM</span>
+                            ${starsHTML}
+                        </button>
+                    </div>
+                `;
+                const buttonContainer = card.querySelector('.btn-container');
+                buttonContainer.onclick = () => showConfirmation(coupon.id);
+                couponContainer.appendChild(card);
+                updateCardState(coupon.id);
+            });
+        }
+        
+        function animateTitle() {
+            const titleText = "Zaia's Coupon Book";
+            mainTitle.innerHTML = titleText
+                .split('')
+                .map((char, index) => {
+                    const delay = Math.sin(index / 1.5) * 0.4;
+                    if (char === ' ') {
+                        return `<span style="width: 0.5em;"></span>`;
+                    }
+                    return `<span style="--delay: ${delay}s">${char}</span>`;
+                })
+                .join('');
+        }
+        
+        function handleMouseMove(e) {
+            const { clientX, clientY } = e;
+            const { innerWidth, innerHeight } = window;
+            const mouseX = (clientX / innerWidth - 0.5) * 2;
+            const mouseY = (clientY / innerHeight - 0.5) * 2;
+
+            const cards = document.querySelectorAll('.card');
+            cards.forEach((card, index) => {
+                const depth = (index % 4 + 1) * 4;
+                const moveX = mouseX * depth;
+                const moveY = mouseY * depth;
+                card.style.transform = `translate(${moveX}px, ${moveY}px)`;
+            });
+        }
+        
+        // Event Listeners
+        confirmYesBtn.addEventListener('click', redeemCoupon);
+        confirmNoBtn.addEventListener('click', hideConfirmation);
+        modalOverlay.addEventListener('click', (e) => {
+            if (e.target === modalOverlay) {
+                hideConfirmation();
+            }
+        });
+        document.addEventListener('mousemove', handleMouseMove);
+
+        // Initial Load
+        document.addEventListener('DOMContentLoaded', () => {
+            animateTitle();
+            renderCoupons();
+        });
+    </script>
+</body>
+</html>
