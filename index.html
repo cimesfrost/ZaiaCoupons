@@ -249,8 +249,8 @@
          border-radius: 1em;
          outline: none;
          box-shadow: 0 0 1em 0.25em var(--glow-color),
-           0 0 4em 1em var(--glow-spread-color),
-           inset 0 0 0.75em 0.25em var(--glow-color);
+               0 0 4em 1em var(--glow-spread-color),
+               inset 0 0 0.75em 0.25em var(--glow-color);
          text-shadow: 0 0 0.5em var(--glow-color);
          position: relative;
          transition: all 0.3s;
@@ -275,14 +275,14 @@
          color: var(--btn-color);
          background-color: var(--glow-color);
          box-shadow: 0 0 1em 0.25em var(--glow-color),
-           0 0 4em 2em var(--glow-spread-color),
-           inset 0 0 0.75em 0.25em var(--glow-color);
+               0 0 4em 2em var(--glow-spread-color),
+               inset 0 0 0.75em 0.25em var(--glow-color);
         }
 
         .glowbutton:active {
          box-shadow: 0 0 0.6em 0.25em var(--glow-color),
-           0 0 2.5em 2em var(--glow-spread-color),
-           inset 0 0 0.5em 0.25em var(--glow-color);
+               0 0 2.5em 2em var(--glow-spread-color),
+               inset 0 0 0.5em 0.25em var(--glow-color);
         }
         
         /* --- Animated Border for Special Card --- */
@@ -454,7 +454,6 @@
         <div id="coupon-container"></div>
     </div>
 
-    <!-- Confirmation Modal -->
     <div id="modal-overlay" class="modal-overlay">
         <div id="confirmation-modal" class="confirmation-modal">
             <p>Are you sure?</p>
@@ -465,7 +464,6 @@
         </div>
     </div>
     
-    <!-- Shut Up Modal -->
     <div id="shut-up-modal-overlay" class="modal-overlay">
         <div id="shut-up-modal" class="confirmation-modal">
             <p>You have some nerve, are you out your right mind, YOU GOT ME FUCKED UP!</p>
@@ -476,14 +474,12 @@
         </div>
     </div>
     
-    <!-- "That's what I thought" Modal -->
     <div id="thought-modal-overlay" class="modal-overlay">
         <div class="confirmation-modal">
             <p>That's what I thought.</p>
         </div>
     </div>
     
-    <!-- Fight Response Modal -->
     <div id="fight-response-modal-overlay" class="modal-overlay">
         <div class="confirmation-modal">
             <p>text the code word "peachy" with a time and location pussycat</p>
@@ -493,7 +489,6 @@
         </div>
     </div>
     
-    <!-- Free Head Modal -->
     <div id="free-head-modal-overlay" class="modal-overlay">
         <div id="free-head-modal" class="confirmation-modal">
             <p>CONGRATULATIONS YOU MADE A BEAUTIFUL CHOICE!</p>
@@ -504,7 +499,6 @@
         </div>
     </div>
     
-    <!-- Singing Lessons Modal -->
     <div id="singing-lessons-modal-overlay" class="modal-overlay">
         <div id="singing-lessons-modal" class="confirmation-modal">
             <p>Yeah, about time you clicked this. I'm glad you came to your senses, I'm going to make you a star!</p>
@@ -515,7 +509,6 @@
     </div>
 
 
-    <!-- Notifications -->
     <div id="notification">Redeemed!</div>
 
     <script>
@@ -531,7 +524,8 @@
             { id: 'truth-dare-pass', title: 'The "Truth or Dare" Pass', description: "Give me a truth or dare, and you get to choose which one I have to do." },
             { id: 'singing-lessons-pass', title: 'The "Singing Lessons" Pass', description: "I will teach you my beautiful vocal techniques.<br><em>*Infinitely redeemable*</em>" },
             { id: 'future-plan-pass', title: 'The "Future Plan" Pass', description: "You get to hang out with me once in the future of your choosing." },
-            { id: 'lore-drop-pass', title: 'The "Lore Drop" Pass', description: "I will tell you a lore thing about me that you don't know." }
+            { id: 'lore-drop-pass', title: 'The "Lore Drop" Pass', description: "I will tell you a lore thing about me that you don't know." },
+            { id: 'fifty-dollar-voucher', title: 'The "$50 Voucher" Pass', description: 'I will give you $50. It\'s that simple.' }
         ];
         const couponContainer = document.getElementById('coupon-container');
         const modalOverlay = document.getElementById('modal-overlay');
@@ -610,9 +604,9 @@
             
             // Special cases for infinitely redeemable coupons
             if (couponToRedeem === 'singing-lessons-pass' || couponToRedeem === 'free-head-pass') {
-                 hideConfirmation();
-                 showNotification();
-                 return; // Don't track count
+                hideConfirmation();
+                showNotification();
+                return; // Don't track count
             }
 
             let currentCount = redeemedCounts[couponToRedeem] || 0;
