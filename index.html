@@ -284,7 +284,7 @@
                0 0 2.5em 2em var(--glow-spread-color),
                inset 0 0 0.5em 0.25em var(--glow-color);
         }
-        
+
         /* --- Animated Border for Special Card --- */
         .animated-border-card::before {
             content: '';
@@ -357,90 +357,22 @@
         @keyframes fallingStar1 { 0% { top: -10px; left: 220px; opacity: 1; } 100% { top: 200px; left: -20px; opacity: 1; } }
         @keyframes fallingStar2 { 0% { top: -10px; left: 150px; opacity: 1; } 100% { top: 200px; left: -90px; opacity: 1; } }
         @keyframes trace-border {
-            0% {
-                top: 0;
-                left: 0;
-                width: 0;
-                height: 2px;
-            }
-            25% {
-                top: 0;
-                left: 0;
-                width: 100%;
-                height: 2px;
-            }
-            25.001% {
-                top: 0;
-                left: auto;
-                right: 0;
-                width: 2px;
-                height: 0;
-            }
-            50% {
-                top: 0;
-                right: 0;
-                width: 2px;
-                height: 100%;
-            }
-            50.001% {
-                top: auto;
-                bottom: 0;
-                right: 0;
-                width: 0;
-                height: 2px;
-            }
-            75% {
-                bottom: 0;
-                right: 0;
-                width: 100%;
-                height: 2px;
-            }
-            75.001% {
-                bottom: 0;
-                left: 0;
-                right: auto;
-                width: 2px;
-                height: 0;
-            }
-            100% {
-                bottom: 0;
-                left: 0;
-                width: 2px;
-                height: 100%;
-            }
+            0% { top: 0; left: 0; width: 0; height: 2px; } 25% { top: 0; left: 0; width: 100%; height: 2px; }
+            25.001% { top: 0; left: auto; right: 0; width: 2px; height: 0; } 50% { top: 0; right: 0; width: 2px; height: 100%; }
+            50.001% { top: auto; bottom: 0; right: 0; width: 0; height: 2px; } 75% { bottom: 0; right: 0; width: 100%; height: 2px; }
+            75.001% { bottom: 0; left: 0; right: auto; width: 2px; height: 0; } 100% { bottom: 0; left: 0; width: 2px; height: 100%; }
         }
 
         /* --- Mobile Responsive Styles --- */
         @media (max-width: 600px) {
-            .content-wrapper {
-                padding: 15px;
-            }
-            h1 {
-                font-size: 2.5rem;
-            }
-            .card {
-                flex-direction: column;
-                text-align: center;
-                gap: 20px;
-            }
-            .card-info {
-                padding-right: 0;
-            }
-            .card-info .description {
-                max-width: 100%;
-            }
-            .btn-container {
-                width: 150px;
-                height: 50px;
-            }
-            .glowbutton {
-                font-size: 14px;
-                padding: 0.8em 1.5em;
-            }
-            .confirmation-modal {
-                width: 90%;
-                padding: 20px;
-            }
+            .content-wrapper { padding: 15px; }
+            h1 { font-size: 2.5rem; }
+            .card { flex-direction: column; text-align: center; gap: 20px; }
+            .card-info { padding-right: 0; }
+            .card-info .description { max-width: 100%; }
+            .btn-container { width: 150px; height: 50px; }
+            .glowbutton { font-size: 14px; padding: 0.8em 1.5em; }
+            .confirmation-modal { width: 90%; padding: 20px; }
         }
     </style>
 </head>
@@ -513,19 +445,18 @@
 
     <script>
         // --- Application Logic ---
-        const MAX_REDEMPTIONS = 3;
         const couponsData = [
-            { id: 'movie-night-pass', title: 'The "Movie Night" Pass', description: "You can choose a really sad, sappy movie. You can choose a really girly movie. You can choose any movie. Or we can make one haha!" },
-            { id: 'shut-up-pass', title: 'The "Shut Up" Pass', description: "I will shut the fuck up and stop talking." },
-            { id: 'music-session-pass', title: 'The "Shared Music Session" Pass', description: "You get a 60 minute session of us just listening to music, vibing out together. We can take turns adding to a queue or we can listen to a new album just enjoying each other's company." },
-            { id: 'glaze-pass', title: 'The "Glaze" Pass', description: "I will give you 5 compliments!" },
-            { id: 'free-head-pass', title: '"Free Great Head"', description: "I will be your munch!<br><b>*Infinitely redeemable*</b>" },
-            { id: 'quiz-pass', title: 'The "Do a Quiz Together" Pass', description: "I will find a quiz for us to do." },
-            { id: 'truth-dare-pass', title: 'The "Truth or Dare" Pass', description: "Give me a truth or dare, and you get to choose which one I have to do." },
-            { id: 'singing-lessons-pass', title: 'The "Singing Lessons" Pass', description: "I will teach you my beautiful vocal techniques.<br><em>*Infinitely redeemable*</em>" },
-            { id: 'future-plan-pass', title: 'The "Future Plan" Pass', description: "You get to hang out with me once in the future of your choosing." },
-            { id: 'lore-drop-pass', title: 'The "Lore Drop" Pass', description: "I will tell you a lore thing about me that you don't know." },
-            { id: 'fifty-dollar-voucher', title: 'The "$50 Voucher" Pass', description: 'I will give you $50. It\'s that simple.' }
+            { id: 'movie-night-pass', title: 'The "Movie Night" Pass', description: "You can choose a really sad, sappy movie. You can choose a really girly movie. You can choose any movie. Or we can make one haha!", limit: 3 },
+            { id: 'shut-up-pass', title: 'The "Shut Up" Pass', description: "I will shut the fuck up and stop talking.", limit: 3 },
+            { id: 'music-session-pass', title: 'The "Shared Music Session" Pass', description: "You get a 60 minute session of us just listening to music, vibing out together. We can take turns adding to a queue or we can listen to a new album just enjoying each other's company.", limit: 3 },
+            { id: 'glaze-pass', title: 'The "Glaze" Pass', description: "I will give you 5 compliments!", limit: 3 },
+            { id: 'free-head-pass', title: '"Free Great Head"', description: "I will be your munch!<br><b>*Infinitely redeemable*</b>", limit: Infinity },
+            { id: 'quiz-pass', title: 'The "Do a Quiz Together" Pass', description: "I will find a quiz for us to do.", limit: 3 },
+            { id: 'truth-dare-pass', title: 'The "Truth or Dare" Pass', description: "Give me a truth or dare, and you get to choose which one I have to do.", limit: 3 },
+            { id: 'singing-lessons-pass', title: 'The "Singing Lessons" Pass', description: "I will teach you my beautiful vocal techniques.<br><em>*Infinitely redeemable*</em>", limit: Infinity },
+            { id: 'future-plan-pass', title: 'The "Future Plan" Pass', description: "You get to hang out with me once in the future of your choosing.", limit: 3 },
+            { id: 'lore-drop-pass', title: 'The "Lore Drop" Pass', description: "I will tell you a lore thing about me that you don't know.", limit: 3 },
+            { id: 'fifty-dollar-voucher', title: 'The "$50 Voucher" Pass', description: 'I will give you $50. It\'s that simple.', limit: 1 }
         ];
         const couponContainer = document.getElementById('coupon-container');
         const modalOverlay = document.getElementById('modal-overlay');
@@ -600,17 +531,20 @@
         function redeemCoupon() {
             if (!couponToRedeem) return;
 
-            let redeemedCounts = loadRedeemedState();
-            
-            // Special cases for infinitely redeemable coupons
-            if (couponToRedeem === 'singing-lessons-pass' || couponToRedeem === 'free-head-pass') {
-                hideConfirmation();
-                showNotification();
-                return; // Don't track count
+            const couponConfig = couponsData.find(c => c.id === couponToRedeem);
+            if (!couponConfig) return;
+
+            // Special handling for coupons with special modals that are infinitely redeemable
+            if (couponConfig.limit === Infinity) {
+                 hideConfirmation();
+                 showNotification();
+                 return;
             }
 
+            let redeemedCounts = loadRedeemedState();
             let currentCount = redeemedCounts[couponToRedeem] || 0;
-            if (currentCount < MAX_REDEMPTIONS) {
+
+            if (currentCount < couponConfig.limit) {
                 currentCount++;
                 redeemedCounts[couponToRedeem] = currentCount;
                 saveRedeemedState(redeemedCounts);
@@ -621,37 +555,38 @@
         }
 
         function updateCardState(couponId) {
-            if (couponId === 'singing-lessons-pass' || couponId === 'free-head-pass') {
-                const card = document.querySelector(`[data-coupon-id="${couponId}"]`);
-                if (!card) return;
-                const remainingText = card.querySelector('p.remaining');
-                remainingText.textContent = 'Can be used anytime!';
-                return;
-            }
+            const couponConfig = couponsData.find(c => c.id === couponId);
+            if (!couponConfig) return;
 
-            const redeemedCounts = loadRedeemedState();
-            const count = redeemedCounts[couponId] || 0;
-            const remaining = MAX_REDEMPTIONS - count;
             const card = document.querySelector(`[data-coupon-id="${couponId}"]`);
             if (!card) return;
             const remainingText = card.querySelector('p.remaining');
             const buttonContainer = card.querySelector('.btn-container');
             const button = buttonContainer.querySelector('button');
 
+            if (couponConfig.limit === Infinity) {
+                remainingText.textContent = 'Can be used anytime!';
+                return;
+            }
+
+            const redeemedCounts = loadRedeemedState();
+            const count = redeemedCounts[couponId] || 0;
+            const remaining = couponConfig.limit - count;
+
             if (remaining <= 0) {
                 card.classList.add('redeemed');
                 remainingText.textContent = 'Fully Redeemed!';
                 
-                if (button.classList.contains('glowbutton')) {
-                    button.textContent = 'USED';
+                const buttonTextSpan = button.querySelector('span');
+                if (buttonTextSpan) {
+                    buttonTextSpan.textContent = 'USED';
                 } else {
-                    const buttonTextSpan = button.querySelector('span');
-                    if (buttonTextSpan) buttonTextSpan.textContent = 'USED';
+                    button.textContent = 'USED';
                 }
 
                 buttonContainer.onclick = null;
             } else {
-                remainingText.textContent = `${remaining} of ${MAX_REDEMPTIONS} uses left`;
+                remainingText.textContent = `${remaining} of ${couponConfig.limit} use${couponConfig.limit > 1 ? 's' : ''} left`;
             }
         }
 
@@ -678,7 +613,8 @@
                         <div style="animation-delay: ${Math.random() * 5}s;" class="shooting-star shooting-star-1"></div>
                         <div style="animation-delay: ${Math.random() * 5 + 5}s;" class="shooting-star shooting-star-2"></div>
                     `;
-                    buttonHTML = `<button class="space-btn"><span>REDEEM</span>${starsHTML}</button>`;
+                    const buttonText = coupon.id === 'fifty-dollar-voucher' ? 'GET $50' : 'REDEEM';
+                    buttonHTML = `<button class="space-btn"><span>${buttonText}</span>${starsHTML}</button>`;
                 }
 
                 card.innerHTML = `
