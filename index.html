@@ -449,13 +449,12 @@
             { id: 'movie-night-pass', title: 'The "Movie Night" Pass', description: "You can choose a really sad, sappy movie. You can choose a really girly movie. You can choose any movie. Or we can make one haha!", limit: 3 },
             { id: 'shut-up-pass', title: 'The "Shut Up" Pass', description: "I will shut the fuck up and stop talking.", limit: 3 },
             { id: 'music-session-pass', title: 'The "Shared Music Session" Pass', description: "You get a 60 minute session of us just listening to music, vibing out together. We can take turns adding to a queue or we can listen to a new album just enjoying each other's company.", limit: 3 },
-            { id: 'glaze-pass', title: 'The "Glaze" Pass', description: "I will give you 5 compliments!", limit: 3 },
+            { id: 'glaze-pass', title: 'The "Glaze" Pass', description: "I will give you 2 compliments!", limit: 3 },
             { id: 'free-head-pass', title: '"Free Great Head"', description: "I will be your munch!<br><b>*Infinitely redeemable*</b>", limit: Infinity },
             { id: 'quiz-pass', title: 'The "Do a Quiz Together" Pass', description: "I will find a quiz for us to do.", limit: 3 },
-            { id: 'truth-dare-pass', title: 'The "Truth or Dare" Pass', description: "Give me a truth or dare, and you get to choose which one I have to do.", limit: 3 },
             { id: 'singing-lessons-pass', title: 'The "Singing Lessons" Pass', description: "I will teach you my beautiful vocal techniques.<br><em>*Infinitely redeemable*</em>", limit: Infinity },
             { id: 'lore-drop-pass', title: 'The "Lore Drop" Pass', description: "I will tell you a lore thing about me that you don't know.", limit: 3 },
-            { id: 'fifty-dollar-voucher', title: 'The "$50 Voucher" Pass', description: 'I will give you $50. It\'s that simple.', limit: 1 }
+            { id: 'grubhub-orders', title: 'Three Grubhub Orders on Me', description: 'I will order you food from Grubhub on three separate occasions.', limit: 3 }
         ];
         const couponContainer = document.getElementById('coupon-container');
         const modalOverlay = document.getElementById('modal-overlay');
@@ -612,7 +611,7 @@
                         <div style="animation-delay: ${Math.random() * 5}s;" class="shooting-star shooting-star-1"></div>
                         <div style="animation-delay: ${Math.random() * 5 + 5}s;" class="shooting-star shooting-star-2"></div>
                     `;
-                    const buttonText = coupon.id === 'fifty-dollar-voucher' ? 'GET $50' : 'REDEEM';
+                    const buttonText = 'REDEEM';
                     buttonHTML = `<button class="space-btn"><span>${buttonText}</span>${starsHTML}</button>`;
                 }
 
